@@ -32,7 +32,17 @@ async function handleRedirectToOriginal(req, res) {
     res.redirect(entry.redirectURL)
 
 }
+async function handleGetAnalytics(req, res) {
+    const shortId = req.params.shortId;
+    const analytics = await URL.findOne({
+        shortId
+    })
+    return res.json({ totalClicks: analytics.visitHistory.length, analytics: analytics.visitHistory, })
+
+
+}
 module.exports = {
     handleGenerateNewShortURL,
-    handleRedirectToOriginal
+    handleRedirectToOriginal,
+    handleGetAnalytics
 }
