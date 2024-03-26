@@ -1,5 +1,6 @@
-const  shortid  = require('shortid');
+const shortid = require('shortid');
 const URL = require("../models/url")
+//post req like this http://localhost:800/url/
 async function handleGenerateNewShortURL(req, res) {
     const body = req.body;
     //first we will extract url from the body, 
@@ -14,6 +15,24 @@ async function handleGenerateNewShortURL(req, res) {
     return res.json({ id: shortID })
 
 }
+//upto this point a shortid created , now we want get request on that short id so that we get redirect to the original url
+//get req like this http://localhost:800/url/peQU9yuyw
+async function handleRedirectToOriginal(req, res) {
+    const shortId = req.params.shortId;
+    //first parameter is to find and second is to update 
+    const entry = await URL.findOneAndUpdate({
+        shortId
+    }, {
+        $push: {
+            visitHistory: {
+                timestamp: Date.now(),
+            }
+        }
+    })
+    res.redirect(entry.redirectURL)
+
+}
 module.exports = {
     handleGenerateNewShortURL,
+    handleRedirectToOriginal
 }
