@@ -39,7 +39,6 @@ async function handleGetAnalytics(req, res) {
     })
     return res.json({ totalClicks: analytics.visitHistory.length, analytics: analytics.visitHistory, })
 
-
 }
 module.exports = {
     handleGenerateNewShortURL,
