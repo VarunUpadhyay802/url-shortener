@@ -12,7 +12,10 @@ async function handleGenerateNewShortURL(req, res) {
         redirectURL: body.url,
         visitHistory: [],
     })
-    return res.json({ id: shortID })
+    // return res.json({ id: shortID })
+    return res.render('home', {
+        id: shortID
+    })
 
 }
 //upto this point a shortid created , now we want get request on that short id so that we get redirect to the original url
@@ -29,7 +32,11 @@ async function handleRedirectToOriginal(req, res) {
             }
         }
     })
-    res.redirect(entry.redirectURL)
+
+    if (entry) {
+        res.redirect(entry.redirectURL)
+    }
+
 
 }
 async function handleGetAnalytics(req, res) {
