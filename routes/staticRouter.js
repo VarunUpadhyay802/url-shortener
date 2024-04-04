@@ -9,5 +9,13 @@ router.get('/', async (req, res) => {
     })
 
 })
+router.get('/signup', async (req, res) => {
+
+    // const xyz = req.body
+    return res.render("signup", {
+        // urls: allurls
+    })
+
+})
 
 module.exports = router
