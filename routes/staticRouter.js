@@ -9,13 +9,11 @@ router.get('/', async (req, res) => {
     })
 
 })
+router.get('/login', async (req, res) => {
+    return res.render("login")
+})
 router.get('/signup', async (req, res) => {
-
-    // const xyz = req.body
-    return res.render("signup", {
-        // urls: allurls
-    })
-
+    return res.render("signup")
 })
 
 module.exports = router

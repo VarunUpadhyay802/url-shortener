@@ -1,12 +1,14 @@
 const express = require("express")
 const { connectToMongoDB } = require("./connect")
 const path = require("path")
+const cookieParser = require("cookie-parser")
 const urlRoute = require("./routes/url")
 const URL = require("./models/url")
 const staticRouter = require("./routes/staticRouter")
 const userRoute = require("./routes/user")
 const app = express();
 const PORT = 8000;
+const { restrictToLoggedinUserOnly } = require("./middleware/auth")
 connectToMongoDB("mongodb://127.0.0.1:27017/short-url").then(() => console.log("connected to mongoDB"))
 
 app.set("view engine", "ejs");
@@ -14,10 +16,13 @@ app.set("view engine", "ejs");
 //we have successfully rendered home from views
 app.set('views', path.resolve("./views"))
 //these middleware states that, we will support json data as well as form data
-app.use(express.json())
+app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }))
 
-app.use("/url", urlRoute)
+//now we have to protect the url route , we want to the user to have access to 
+//url requests only if the user is logged in
+app.use("/url", restrictToLoggedinUserOnly, urlRoute)
 app.use("/user", userRoute)
 app.use("/", staticRouter)
 
