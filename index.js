@@ -8,7 +8,7 @@ const staticRouter = require("./routes/staticRouter")
 const userRoute = require("./routes/user")
 const app = express();
 const PORT = 8000;
-const { restrictToLoggedinUserOnly } = require("./middleware/auth")
+const { restrictToLoggedinUserOnly, checkAuth } = require("./middleware/auth")
 connectToMongoDB("mongodb://127.0.0.1:27017/short-url").then(() => console.log("connected to mongoDB"))
 
 app.set("view engine", "ejs");
@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: false }))
 //url requests only if the user is logged in
 app.use("/url", restrictToLoggedinUserOnly, urlRoute)
 app.use("/user", userRoute)
-app.use("/", staticRouter)
+app.use("/", checkAuth, staticRouter)
 
 app.get("/test", async (req, res) => {
     try {

@@ -12,6 +12,18 @@ async function restrictToLoggedinUserOnly(req, res, next) {
     req.user = user;
     next();
 }
-module.exports = {
-    restrictToLoggedinUserOnly
-}
+///below function is just checking, it's not enforcing 
+//user hai,  to theek  hai nahi to koi baat nahi
+async function checkAuth(req, res, next) {
+    const userUid = req.cookies?.uid;
+  
+    const user = getUser(userUid);
+  
+    req.user = user;
+    next();
+  }
+  
+  module.exports = {
+    restrictToLoggedinUserOnly,
+    checkAuth,
+  };
