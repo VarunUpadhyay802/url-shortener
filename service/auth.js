@@ -1,17 +1,24 @@
-//we have to store sessionId with user object 
-//& to do that we are making this auth.js
+//now we don't need state so we removed the sessioIDtoUserMap
+const jwt = require('jsonwebtoken')
+const secret = "VarunUapdhyaySecretKey"
 
-//basically sessionIdToUserMap is  a hash map
-//so this auth.js is a map file which take record of everything (example of parking lot in the lecture  )
-const sessionIdToUserMap = new Map();
+function setUser(user) {
+    const payload = ({
+        id: user.id,
+        Username:"blah",
+        email: user.email,
+    })
 
-
-function setUser(id, user) {
-    sessionIdToUserMap.set(id, user);
+    return jwt.sign(payload, secret)
 }
 
-function getUser(id) {
-    return sessionIdToUserMap.get(id);
+function getUser(token) {
+    if (!token) return null
+    try {
+        return jwt.verify(token, secret)        
+    } catch (error) {
+        return null
+    }
 }
 module.exports = {
     setUser, getUser
