@@ -18,8 +18,9 @@ const handleUserLogin = async (req, res) => {
     })
   
     const token = setUser(user)
-    res.cookie("uid",token)
-    return res.redirect('/')
+    // res.cookie("uid",token)
+    //we ar sending token as a json response & we will verify that token in the middleware auth.js
+    return res.json({token})
 }
 
 module.exports = {
