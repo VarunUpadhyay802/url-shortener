@@ -21,7 +21,5 @@ const urlSchema = new mongoose.Schema({
 
     }, { timestamps: true }]
 })
-//mongoose.model() function creates a model based on the schema definition.
-// It takes two arguments: the name of the collection (in this case, 'url') and the schema object (urlSchema).
 const URL = mongoose.model('url', urlSchema)
 module.exports = URL;

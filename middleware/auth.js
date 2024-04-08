@@ -1,6 +1,7 @@
 const { getUser } = require("../service/auth");
 
 // Middleware function to check for user authentication
+//Authentication
 function checkForAuthentication(req, res, next) {
    
     const tokenCookie = req.cookies?.token;
@@ -17,6 +18,8 @@ function checkForAuthentication(req, res, next) {
 }
 //we will pass roles in an array, because maybe there are something which will be accessed by both user and admin 
 //the above function just do a soft check on user, but below function restricts it actually
+
+//Authorization
 function restrictTo(roles = []) {
     return function (req, res, next) {
         if (!req.user)
