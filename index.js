@@ -20,11 +20,13 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }))
 //so ye to hamesha chalega hi chalega 
-app.use(checkForAuthentication())
+// app.use(checkForAuthentication())-------wrong
+//, you're directly calling the function checkForAuthentication() instead of passing it as a middleware function reference.
+app.use(checkForAuthentication)
 
 //now we have to protect the url route , we want to the user to have access to 
 //url requests only if the user is logged in
-app.use("/url",urlRoute)
+app.use("/url" ,  restrictTo(["NORMAL"]) ,urlRoute)
 app.use("/user", userRoute)
 app.use("/",  staticRouter)
 

@@ -2,14 +2,14 @@ const { getUser } = require("../service/auth");
 
 // Middleware function to check for user authentication
 function checkForAuthentication(req, res, next) {
-    // Extract authorization header value from request
-    const authorizationHeaderValue = req.headers["authorization"];
+   
+    const tokenCookie = req.cookies?.token;
     req.user = null;
 
-    if (!authorizationHeaderValue || !authorizationHeaderValue.startsWith('Bearer'))
+    if (!tokenCookie )
         return next();
 
-    const token = authorizationHeaderValue.split("Bearer ")[1];
+    const token = tokenCookie;
     // Retrieve user information based on the token
     const user = getUser(token);
     req.user = user;
@@ -20,7 +20,7 @@ function checkForAuthentication(req, res, next) {
 function restrictTo(roles = []) {
     return function (req, res, next) {
         if (!req.user)
-            return res.redirect("login")
+            return res.redirect("/login")
 
         if (!roles.includes(req.user.role))
             return res.end("UnAuthorized")

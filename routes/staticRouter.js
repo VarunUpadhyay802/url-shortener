@@ -1,10 +1,10 @@
 const express = require("express")
 const router = express.Router();
-const URL = require('../models/url')
+const URL = require('../models/url');
+const { restrictTo } = require("../middleware/auth");
 
-router.get("/", async (req, res) => {
-    if (!req.user) return res.redirect("/login");
-    //earlier we were finding all urls, but now we have to find the urls of a particular user only
+router.get("/", restrictTo(['NORMAL']),async (req, res) => {
+
     const allurls = await URL.find({ createdBy: req.user._id });
     return res.render("home", {
         urls: allurls,

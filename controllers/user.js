@@ -10,7 +10,6 @@ const handleUserSignup = async (req, res) => {
 }
 const handleUserLogin = async (req, res) => {
     const { email, password } = req.body;
-
     const user = await User.findOne({ email, password })
 
     if (!user) return res.render("login", {
@@ -18,9 +17,8 @@ const handleUserLogin = async (req, res) => {
     })
   
     const token = setUser(user)
-    // res.cookie("uid",token)
-    //we ar sending token as a json response & we will verify that token in the middleware auth.js
-    return res.json({token})
+res.cookie("token", token )
+   return res.redirect("/")
 }
 
 module.exports = {
