@@ -5,7 +5,6 @@ const secret = "VarunUapdhyaySecretKey"
 function setUser(user) {
     const payload = ({
         id: user.id,
-        Username:"blah",
         email: user.email,
     })
 

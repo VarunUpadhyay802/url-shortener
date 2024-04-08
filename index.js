@@ -8,7 +8,7 @@ const staticRouter = require("./routes/staticRouter")
 const userRoute = require("./routes/user")
 const app = express();
 const PORT = 8000;
-const { restrictToLoggedinUserOnly, checkAuth } = require("./middleware/auth")
+const { checkForAuthentication, restrictTo } = require("./middleware/auth")
 connectToMongoDB("mongodb://127.0.0.1:27017/short-url").then(() => console.log("connected to mongoDB"))
 
 app.set("view engine", "ejs");
@@ -19,12 +19,14 @@ app.set('views', path.resolve("./views"))
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }))
+//so ye to hamesha chalega hi chalega 
+app.use(checkForAuthentication())
 
 //now we have to protect the url route , we want to the user to have access to 
 //url requests only if the user is logged in
-app.use("/url", restrictToLoggedinUserOnly, urlRoute)
+app.use("/url",urlRoute)
 app.use("/user", userRoute)
-app.use("/", checkAuth, staticRouter)
+app.use("/",  staticRouter)
 
 app.get("/test", async (req, res) => {
     try {
